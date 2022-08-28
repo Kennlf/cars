@@ -1,6 +1,8 @@
 package dat3.cars.configuration;
 
+import dat3.cars.entity.Car;
 import dat3.cars.entity.Member;
+import dat3.cars.repository.CarRepository;
 import dat3.cars.repository.MemberRepository;
 import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
@@ -15,18 +17,27 @@ public class SetupDevUsers implements ApplicationRunner {
     UserWithRolesRepository userWithRolesRepository;
     String passwordUsedByAll;
     MemberRepository memberRepository;
+    CarRepository carRepository;
 
-    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository, MemberRepository memberRepository) {
+    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository, MemberRepository memberRepository, CarRepository carRepository) {
         this.userWithRolesRepository = userWithRolesRepository;
         passwordUsedByAll = "test12";
         this.memberRepository = memberRepository;
+        this.carRepository = carRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) {
-        Member m1 = new Member("Userxx", passwordUsedByAll, "a@b.dk", "Harry");
+
+        //String user, String password, String email, String firstName, String lastName,
+        // String street, String city, int zip, boolean approved, int ranking
+        Member m1 = new Member("Userxx", passwordUsedByAll, "a@b.dk", "Harry", "Potter",
+                "Hogwarts", "Imagination", 0000, true, 1);
         memberRepository.save(m1);
         setupUserWithRoleUsers();
+        Car c1 = new Car("Skoda", "Karoq", 550, 0.10);
+        carRepository.save(c1);
+
     }
 
     /*****************************************************************************************
