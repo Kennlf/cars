@@ -21,8 +21,8 @@ class MemberRepositoryTest {
 
     @BeforeAll
     public static void setUpData(@Autowired MemberRepository memberRepository){
-        Member m1 = new Member("User1", "test", "a@a.dk", "Anders", "And", "Det lille hus", "Andeby", 1111, true, 1);
-        Member m2 = new Member("User2", "testtest", "b@b.dk", "Nemo", "fisk", "En annemone", "Havet", 1522, true, 1);
+        Member m1 = new Member("User1", "test", "a@a.dk", "Anders", "And", "Det lille hus", "Andeby", "1111");
+        Member m2 = new Member("User2", "testtest", "b@b.dk", "Nemo", "fisk", "En annemone", "Havet", "1522");
 
         memberRepository.save(m1);
         memberRepository.save(m2);
@@ -39,21 +39,4 @@ class MemberRepositoryTest {
     }
 
 
-    @Test
-    void findMemberByZip() {
-        List<Member> members = memberRepository.findMemberByZip(1111);
-        assertEquals(1, members.size());
-    }
-
-    @Test
-    void findMemberByZipBetween() {
-        List<Member> members = memberRepository.findMemberByZipBetween(0, 1200);
-        assertEquals(1, members.size());
-
-        members = memberRepository.findMemberByZipBetween(1200, 1523);
-        assertEquals(1, members.size());
-
-        members = memberRepository.findMemberByZipBetween(0, 1550);
-        assertEquals(2, members.size());
-    }
 }

@@ -32,7 +32,7 @@ public class SetupDevUsers implements ApplicationRunner {
         //String user, String password, String email, String firstName, String lastName,
         // String street, String city, int zip, boolean approved, int ranking
         Member m1 = new Member("Userxx", passwordUsedByAll, "a@b.dk", "Harry", "Potter",
-                "Hogwarts", "Imagination", 0000, true, 1);
+                "Hogwarts", "Imagination","0000");
         memberRepository.save(m1);
         setupUserWithRoleUsers();
         Car c1 = new Car("Skoda", "Karoq", 550, 0.10);
