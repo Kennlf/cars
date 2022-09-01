@@ -22,3 +22,6 @@ for how to use the code for the cars'R' Us project and future projects this seme
   "password" : "test12"
   }
   ```
+
+
+[![Build and deploy JAR app to Azure Web App - Kennlfcars](https://github.com/Kennlf/cars/actions/workflows/master_kennlfcars.yml/badge.svg)](https://github.com/Kennlf/cars/actions/workflows/master_kennlfcars.yml)
