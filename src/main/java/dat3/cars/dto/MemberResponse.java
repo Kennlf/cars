@@ -14,19 +14,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberResponse {
-    String username; //Remember this is the primary key
-    String email;
-    String firstName;
-    String lastName;
-    String street;
-    String city;
-    String zip;
+    private String username; //Remember this is the primary key
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String street;
+    private String city;
+    private String zip;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    LocalDateTime created;
+    private LocalDateTime created;
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss", shape = JsonFormat.Shape.STRING)
-    LocalDateTime edited;
-    Integer ranking;
+    private LocalDateTime edited;
+    private Integer ranking;
 
     //Convert Member Entity to Member DTO
     public MemberResponse(Member m, boolean includeAll) {

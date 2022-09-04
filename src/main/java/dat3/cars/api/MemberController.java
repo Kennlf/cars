@@ -3,9 +3,7 @@ package dat3.cars.api;
 import dat3.cars.dto.MemberRequest;
 import dat3.cars.dto.MemberResponse;
 import dat3.cars.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +24,7 @@ public class MemberController {
     //Security ADMIN ???
     @GetMapping
     List<MemberResponse> getMembers(){
-        return memberService.findMembers();
+        return memberService.getMembers();
     }
 
     //Security ADMIN ???

@@ -6,7 +6,6 @@ import dat3.cars.entity.Member;
 import dat3.cars.repository.MemberRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public List<MemberResponse> findMembers() {
+    public List<MemberResponse> getMembers() {
         List<Member> members = memberRepository.findAll();
         List<MemberResponse> response = members.stream().map(member -> new MemberResponse(member, false)).collect(Collectors.toList());
         return response;
@@ -29,19 +28,19 @@ public class MemberService {
 
     public MemberResponse findMemberByUsername(String username) throws Exception {
         // Returnerer en optional
-        Member found = memberRepository.findById(username).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
-        return new MemberResponse(found,false);
+        Member found = memberRepository.findById(username).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return new MemberResponse(found, false);
     }
 
-    public MemberResponse addMember(MemberRequest memberRequest){
+    public MemberResponse addMember(MemberRequest memberRequest) {
         //Later you should add error checks --> Missing arguments, email taken etc.
 
-        if(memberRepository.existsById(memberRequest.getUsername())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Member with this ID already exist");
+        if (memberRepository.existsById(memberRequest.getUsername())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member with this ID already exist");
         }
-        if(memberRepository.existsByEmail(memberRequest.getEmail())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Member with this Email already exist");
+        if (memberRepository.existsByEmail(memberRequest.getEmail())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member with this Email already exist");
         }
 
         Member newMember = MemberRequest.getMemberEntity(memberRequest);
@@ -52,9 +51,10 @@ public class MemberService {
 
 
     public void editMember(MemberRequest body, String username) {
-        Member member = memberRepository.findById(username).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "mMember with this username already exist"));
-        if(!body.getUsername().equals(username)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Cannot change username");
+        Member member = memberRepository.findById(username).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member with this username already exist"));
+        if (!body.getUsername().equals(username)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot change username");
         }
 
         member.setPassword(body.getPassword());
@@ -68,7 +68,7 @@ public class MemberService {
     }
 
     public void setRankingForUser(String username, int value) {
-        Member member = memberRepository.findById(username).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member with this username already exist"));
+        Member member = memberRepository.findById(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Member with this username already exist"));
         member.setRanking(value);
         memberRepository.save(member);
     }

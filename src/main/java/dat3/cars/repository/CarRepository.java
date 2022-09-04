@@ -10,6 +10,6 @@ import java.util.List;
 public interface CarRepository extends JpaRepository<Car, Integer> {
 
     List<Car> findCarByBrand(String brand);
-    List<Car> findCarByPricePrDayBetween(double start, double min);
-
+    List<Car> findCarByPricePrDayBetween(double min, double max);
+    
 }
