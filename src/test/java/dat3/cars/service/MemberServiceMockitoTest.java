@@ -51,7 +51,7 @@ class MemberServiceMockitoTest {
     @Test
     void addMember() throws Exception {
         Member m = new Member("m1", "pw", "m1@a.dk", "aa", "aaa", "aaaa", "aaaa", "1234");
-        //If you wan't to do this for Car you have to manually set the id. REMEMBER there is NO real database
+        //If you want to do this for Car you have to manually set the id. REMEMBER there is NO real database
         Mockito.when(memberRepository.save(any(Member.class))).thenReturn(m);
         MemberRequest request = new MemberRequest(m);
         MemberResponse found = memberService.addMember(request);

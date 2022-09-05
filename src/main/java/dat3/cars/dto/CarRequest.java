@@ -1,6 +1,7 @@
 package dat3.cars.dto;
 
 import dat3.cars.entity.Car;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class CarRequest {

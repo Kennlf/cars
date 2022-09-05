@@ -6,11 +6,13 @@ import dat3.cars.dto.MemberResponse;
 import dat3.cars.entity.Car;
 import dat3.cars.repository.CarRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CarService {
 
     CarRepository carRepository;
@@ -19,35 +21,28 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public List<CarResponse> getCars(){
+    public List<CarResponse> getCars(Boolean includeAll){
         List<Car> cars = carRepository.findAll();
-        List<CarResponse> response = cars.stream().map(car -> new CarResponse(car, false)).collect(Collectors.toList());
+        List<CarResponse> response = cars.stream().map(car ->
+                new CarResponse(car, includeAll)).collect(Collectors.toList());
         return response;
     }
 
-    public CarResponse findCarById(int id) throws Exception{
+    public CarResponse findCarById(int id, boolean includeAll) throws Exception{
         Car found = carRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Car not found"));
-        return new CarResponse(found, false);
+        return new CarResponse(found, includeAll);
     }
 
-    public CarResponse addCar(CarRequest carRequest){
-        if(carRepository.existsById(carRequest.getId())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with this ID already exists");
-        }
-
+    public CarResponse addCar(CarRequest carRequest, boolean includeAll){
         Car newCar = CarRequest.getCarEntity(carRequest);
         newCar = carRepository.save(newCar);
-
-        return new CarResponse(newCar, false);
+        return new CarResponse(newCar, includeAll);
     }
 
     public void editCar(CarRequest body, int id){
         Car car = carRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with this ID already exists"));
-        if(!(body.getId() == (id))){ // is this can't find car? because id doens't match?
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't change Id");
-        }
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with this ID does't exists"));
 
         car.setBrand(body.getBrand());
         car.setModel(body.getModel());
@@ -56,11 +51,19 @@ public class CarService {
         carRepository.save(car);
     }
 
-    public void setDiscountForCar(int id, double value){
-        Car car = carRepository.findById(id).orElseThrow(
-                ()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Car with this id does not exists"));
+    public void setDiscountForCar(int carId, double value){
+        Car car = carRepository.findById(carId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Car with this id does not exists"));
         car.setBestDiscount(value);
         carRepository.save(car);
+    }
+
+    public void setPricePrDay(int carId, double price){
+        Car car = carRepository.findById(carId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Car with this id does not exists"));
+        car.setPricePrDay(price);
+        carRepository.save(car);
+
     }
 
     public void deleteById(int id){

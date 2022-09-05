@@ -51,7 +51,7 @@ public class MemberController {
 
     //Security USER/ADMIN ???
     @PutMapping("/{username}")
-    ResponseEntity<Boolean> editMember(@RequestBody MemberRequest body, @PathVariable String username){
+    public ResponseEntity<Boolean> editMember(@RequestBody MemberRequest body, @PathVariable String username){
         memberService.editMember(body,username);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
