@@ -23,10 +23,10 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 50, nullable = false)
     private String brand;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 50, nullable = false)
     private String model;
 
     private double pricePrDay;
@@ -40,7 +40,6 @@ public class Car {
    private LocalDateTime LastEdited;
 
     public Car(String brand, String model, double pricePrDay, double bestDiscount) {
-        this.id = id;
         this.brand = brand;
         this.model = model;
         this.pricePrDay = pricePrDay;

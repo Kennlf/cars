@@ -38,6 +38,7 @@ class CarServiceTestH2 {
         c2 = carRepository.save(c2);
         carId1 = c1.getId();
         carId2 = c2.getId();
+        carRepository = car_Repository;
     }
 
     @BeforeEach
@@ -49,39 +50,65 @@ class CarServiceTestH2 {
     void getCars() {
         List<CarResponse> cars = carService.getCars(false);
         assertEquals(2, cars.size());
-        //assertThat(response, containsInAnyOrder(hasProperty("brand", is("Skoda")), hasProperty("brand", is("Mercedes"))));
+        assertThat(cars, containsInAnyOrder(hasProperty("brand", is("Skoda")), hasProperty("brand", is("Mercedes"))));
+        assertNull(cars.get(0).getBestDiscount());
     }
-/*
+
     @Test
     void findCarById() throws Exception {
         CarResponse response = carService.findCarById(carId1, false);
+        assertEquals(carId1, response.getId());
+        assertNull(response.getBestDiscount());
+        assertNull(response.getCreated());
+    }
+
+    @Test
+    void findCarByIdWithFullInfo() throws Exception {
+        CarResponse response = carService.findCarById(carId1,true);
         assertEquals(carId1, response.getId());
         assertEquals(10, response.getBestDiscount());
         assertNotNull(response.getCreated());
     }
 
- */
-
-    //Hvad går galt - Hvorfor kan den ikke bare laves i en CarRequest uden først at laves som car
-    // Metoden virker heller ikke
-    /*
     @Test
     void addCar() {
-        Car c = new Car("Audi","A6",750,5);
-        CarRequest request = new CarRequest(c);
+        CarRequest request = new CarRequest("Audi","A6",750,5);
         CarResponse response = carService.addCar(request, true);
         assertTrue(response.getId() > 0);
         assertTrue(response.getCreated().isBefore(LocalDateTime.now()));
-    } */
-
-
-    @Test
-    void editCar() throws Exception {
     }
 
 
     @Test
-    void setDiscountForCar() {
+    void editCar() throws Exception {
+        Car carToEditEntity = carRepository.findById(carId1).get();
+        LocalDateTime prevEdited = carToEditEntity.getLastEdited();
+        carToEditEntity.setPricePrDay(999);
+        carToEditEntity.setBestDiscount(99);
+        CarRequest request = new CarRequest(carToEditEntity);
+        carService.editCar(request,carId1);
+
+        Car edited = carRepository.findById(carId1).get();
+        assertEquals(999, edited.getPricePrDay());
+        assertEquals(99, edited.getBestDiscount());
+        assertTrue(edited.getLastEdited().isBefore(LocalDateTime.now()));
+    }
+
+    @Test
+    void setPricePrDay() throws Exception {
+        carService.setPricePrDay(carId1, 9);
+
+        CarResponse response = carService.findCarById(carId1, false);
+        assertEquals(9, response.getPricePrDay());
+    }
+
+
+    @Test
+    void setDiscountForCar() throws Exception {
+        carService.setDiscountForCar(carId1, 999);
+
+        CarResponse response = carService.findCarById(carId1, true);
+        assertEquals(999, response.getBestDiscount());
     }
 
     @Test

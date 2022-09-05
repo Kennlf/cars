@@ -35,7 +35,7 @@ public class CarController {
 
     }
 
-    @GetMapping("/admin/{carId}")
+    @GetMapping(path = "/admin/{carId}")
     public CarResponse getCarByIdWithAllInfo(@PathVariable int carId) throws Exception {
         CarResponse response = carService.findCarById(carId,true);
         return response;

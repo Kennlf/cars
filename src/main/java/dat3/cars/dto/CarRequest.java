@@ -18,8 +18,6 @@ import java.time.LocalDateTime;
 @Setter
 public class CarRequest {
 
-    private int id;
-
     private String brand;
     private String model;
     private double pricePrDay;

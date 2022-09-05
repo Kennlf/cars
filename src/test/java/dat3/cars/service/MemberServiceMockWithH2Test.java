@@ -80,12 +80,12 @@ class MemberServiceMockWithH2Test {
     @Test
     void editMember() throws Exception {
     // No easytest on body -> making new member on existing member to see if info is changed.
-        MemberRequest req = new MemberRequest(new Member("m1", "pw", "m1@a.dk","aa","aaa", "111","222","333"));
+        MemberRequest req = new MemberRequest(new Member("m1", "pw", "m1@a.dk","aa","aaa", "abc","cba","333"));
         memberService.editMember(req, "m1");
     // Here we are checking that the information for the member has changed
         MemberResponse response = memberService.findMemberByUsername("m1");
-        assertEquals("111", response.getStreet());
-        assertEquals("222", response.getCity());
+        assertEquals("abc", response.getStreet());
+        assertEquals("cba", response.getCity());
         assertEquals("333", response.getZip());
     }
 
