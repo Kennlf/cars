@@ -2,14 +2,18 @@ package dat3.cars.configuration;
 
 import dat3.cars.entity.Car;
 import dat3.cars.entity.Member;
+import dat3.cars.entity.Reservation;
 import dat3.cars.repository.CarRepository;
 import dat3.cars.repository.MemberRepository;
+import dat3.cars.repository.ReservationRepository;
 import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Controller;
 import dat3.security.repository.UserWithRolesRepository;
+
+import java.time.LocalDate;
 
 @Controller
 public class SetupDevUsers implements ApplicationRunner {
@@ -18,12 +22,14 @@ public class SetupDevUsers implements ApplicationRunner {
     String passwordUsedByAll;
     MemberRepository memberRepository;
     CarRepository carRepository;
+    ReservationRepository reservationRepository;
 
-    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository, MemberRepository memberRepository, CarRepository carRepository) {
+    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository, MemberRepository memberRepository, CarRepository carRepository, ReservationRepository reservationRepository) {
         this.userWithRolesRepository = userWithRolesRepository;
         passwordUsedByAll = "test12";
         this.memberRepository = memberRepository;
         this.carRepository = carRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
@@ -37,6 +43,15 @@ public class SetupDevUsers implements ApplicationRunner {
         setupUserWithRoleUsers();
         Car c1 = new Car("Skoda", "Karoq", 550, 0.10);
         carRepository.save(c1);
+        LocalDate date = LocalDate.of(2022,9,6);
+
+        Reservation newRes = new Reservation(m1,c1,date);
+        m1.addReservation(newRes);
+        memberRepository.save(m1);
+        c1.addReservation(newRes);
+        //reservationRepository.save(newRes);
+
+
 
     }
 
