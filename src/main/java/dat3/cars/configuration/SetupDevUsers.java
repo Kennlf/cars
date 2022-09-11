@@ -46,7 +46,13 @@ public class SetupDevUsers implements ApplicationRunner {
         LocalDate date = LocalDate.of(2022,9,6);
 
         Reservation newRes = new Reservation(m1,c1,date);
+        Reservation newRes2 = new Reservation(m1,c1,LocalDate.of(2023,6,9));
+        Reservation newRes3 = new Reservation(m1,c1,LocalDate.of(2023,2,10));
+        Reservation newRes4 = new Reservation(m1,c1,LocalDate.of(2023,12,29));
         m1.addReservation(newRes);
+       // m1.addReservation(newRes2);
+       // m1.addReservation(newRes3);
+       // m1.addReservation(newRes4);
         memberRepository.save(m1);
         c1.addReservation(newRes);
         //reservationRepository.save(newRes);

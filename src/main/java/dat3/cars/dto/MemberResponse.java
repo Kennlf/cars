@@ -3,16 +3,19 @@ package dat3.cars.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import dat3.cars.entity.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import dat3.cars.entity.Reservation;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public class MemberResponse {
     private String username; //Remember this is the primary key
     private String email;
@@ -28,6 +31,8 @@ public class MemberResponse {
     private LocalDateTime edited;
     private Integer ranking;
 
+    private List<ReservationResponse> reservations;
+
     //Convert Member Entity to Member DTO
     public MemberResponse(Member m, boolean includeAll) {
         this.username = m.getUsername();
@@ -41,6 +46,17 @@ public class MemberResponse {
             this.created = m.getCreated();
             this.edited = m.getEdited();
             this.ranking = m.getRanking();
+        }
+
+        if(m.getReservations().size() > 0){
+            reservations = m.getReservations().stream().map(r
+                    -> ReservationResponse.builder()
+                    .resId(r.getId())
+                    .carId(r.getCar().getId())
+                    .carBrand(r.getCar().getBrand())
+                    .carModel(r.getCar().getModel())
+                    .rentalDate(r.getRentalDate())
+                    .build()).collect(Collectors.toList());
         }
     }
 }

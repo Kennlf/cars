@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class Reservation {
 
     @Id
@@ -31,6 +32,7 @@ public class Reservation {
 
     @ManyToOne
     private Car car;
+
 
     public Reservation(Member member, Car car, LocalDate rentalDate) {
         this.member = member;

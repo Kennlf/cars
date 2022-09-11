@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 class CarServiceTestH2 {
 
-    public CarService carService;
-    public static CarRepository carRepository;
+    private CarService carService;
+    private static CarRepository carRepository;
     private static int carId1, carId2;
 
 
@@ -34,11 +34,11 @@ class CarServiceTestH2 {
         carRepository.deleteAll();
         Car c1 = new Car("Skoda", "Octavia", 500, 10);
         Car c2 = new Car("Mercedes", "220d", 700, 7);
-        c1 = carRepository.save(c1);
-        c2 = carRepository.save(c2);
+        carRepository.save(c1);
+        carRepository.save(c2);
         carId1 = c1.getId();
         carId2 = c2.getId();
-        carRepository = car_Repository;
+
     }
 
     @BeforeEach
